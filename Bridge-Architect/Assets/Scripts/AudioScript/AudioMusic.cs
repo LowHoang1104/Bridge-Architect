@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Map1 : MonoBehaviour
+public class AudioMusic : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     public AudioSource music;
     public AudioSource water;
 
@@ -14,7 +14,6 @@ public class Map1 : MonoBehaviour
         water.Play();
     }
 
-    // Update is called once per frame
     void Update()
     {
         
