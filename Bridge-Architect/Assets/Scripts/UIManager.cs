@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI BudgetText;
     public Gradient myGradient;
 
-
+    public GameObject[] starImages;
 
     public Image star1;
     public Image star2;
@@ -42,9 +42,9 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    public void Restart()
+    public void Restart(int map)
     {
-        SceneManager.LoadScene("map1");
+        SceneManager.LoadScene("Map" + map);
     }
 
     public void ChangeBar(int barType)
@@ -68,17 +68,15 @@ public class UIManager : MonoBehaviour
         BudgetText.text = Mathf.FloorToInt(currentBudget).ToString() + "$";
         budgetSlider.value = currentBudget / levelBudget;
         budgetSlider.fillRect.GetComponent<Image>().color = myGradient.Evaluate(budgetSlider.value);
-
     }
 
-    public void ShowResult(int score, int starCount)
+        public void ShowStars(int starCount)
     {
-        //scoreBar.fillAmount = score / 100f;
-
         resultPanel.SetActive(true);
         resultPanel.transform.SetAsLastSibling();
         star1.sprite = (starCount >= 1) ? starFull : starEmpty;
         star2.sprite = (starCount >= 2) ? starFull : starEmpty;
         star3.sprite = (starCount >= 3) ? starFull : starEmpty;
     }
+
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bar : MonoBehaviour
 {
+
     public float cost = 1f;
     public float maxLength = 1f;
     public Vector2 startPosition;
@@ -27,6 +28,7 @@ public class Bar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
         if (Time.timeScale == 1) UpdateMaterial();
     }
 

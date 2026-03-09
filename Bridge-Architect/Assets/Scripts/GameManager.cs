@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,9 +9,7 @@ public class GameManager : MonoBehaviour
     public float currentBudget = 0;
     public UIManager myUIManager;
     public static Dictionary<Vector2, Point> AllPoints = new Dictionary<Vector2, Point>();
-
-    public bool gameEnded = false;
-    public UIManager uiManager;
+    public bool winScene = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +32,7 @@ public class GameManager : MonoBehaviour
 
     public bool CanBuyItem(float itemCost)
     {
-        return itemCost < levelBudget;
+        return itemCost <= currentBudget;
     }
 
     public void UpdateBudget(float itemCost)
@@ -42,35 +41,36 @@ public class GameManager : MonoBehaviour
         myUIManager.UpdateBudgetUI(currentBudget, levelBudget);
     }
 
-
-    public int CalculateScore()
+    public bool GameOver()
     {
-        float efficiency = currentBudget / levelBudget;
-        int score = Mathf.RoundToInt(efficiency * 100);
-        return score;
+        return currentBudget <= 0;
     }
 
-    public int GetStarCount(int score)
+    public void WinGame()
     {
-        if (score >= 80) return 3;
-        if (score >= 50) return 2;
-        if (score >= 20) return 1;
-
-        return 0;
+        int achievedStars = GetStars();
+            Debug.Log("Stars: " + achievedStars);
+        myUIManager.ShowStars(achievedStars);
+        
+        winScene = true;
     }
 
-
-    public void GameWin()
+    public int GetStars()
     {
-        if (gameEnded) return;
-        gameEnded = true;
+        float usedBudget = levelBudget - currentBudget;
+        float onePart = levelBudget / 4f;
 
-        int score = CalculateScore();
-        int stars = GetStarCount(score);
-
-        uiManager.ShowResult(score, stars);
-
-        Time.timeScale = 0;
+        if (usedBudget <= 2f * onePart)
+        {
+            return 3;
+        }
+        else if (usedBudget <= 3f * onePart)
+        {
+            return 2;
+        }
+        else
+        {
+            return 1;
+        }
     }
-
 }
