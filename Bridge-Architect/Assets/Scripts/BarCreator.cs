@@ -32,11 +32,18 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
     // Update is called once per frame
     void Update()
     {
+        if (gameManager.GameOver() || gameManager.winScene) return;
         if (barCreationStarted)
         {
             Vector2 endPosition = (Vector2)Vector2Int.RoundToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             Vector2 dir = endPosition - currentBar.startPosition;
-            Vector2 clampedPosition = currentBar.startPosition + Vector2.ClampMagnitude(dir, currentBar.maxLength);
+
+            float maxAllowedLength = currentBar.maxLength;
+            if (currentBar.cost > 0f)
+            {
+                maxAllowedLength = Mathf.Min(currentBar.maxLength, Mathf.Max(0f, gameManager.currentBudget / currentBar.cost));
+            }
+            Vector2 clampedPosition = currentBar.startPosition + Vector2.ClampMagnitude(dir, maxAllowedLength);
 
             currentEndPoint.transform.position = (Vector2)Vector2Int.FloorToInt(clampedPosition);
             currentEndPoint.pointId = currentEndPoint.transform.position;
@@ -46,6 +53,8 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (gameManager.GameOver() || gameManager.winScene) return;
+
         if (!barCreationStarted)
         {
             barCreationStarted = true;
@@ -67,6 +76,7 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
 
     private void DeleteCurrentBar()
     {
+        if (gameManager.GameOver() || gameManager.winScene) return;
         Destroy(currentBar.gameObject);
         if (currentStartPoint.connectedBars.Count == 0 && currentStartPoint.runtime) Destroy(currentStartPoint.gameObject);
         if (currentEndPoint.connectedBars.Count == 0 && currentEndPoint.runtime) Destroy(currentEndPoint.gameObject);
@@ -74,6 +84,7 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
 
     private void FinishBarCreation()
     {
+        if (gameManager.GameOver() || gameManager.winScene) return;
         if (GameManager.AllPoints.ContainsKey(currentEndPoint.transform.position))
         {
             Destroy(currentEndPoint.gameObject);
@@ -99,6 +110,8 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
 
     private void StartBarCreation(Vector2 startPosition)
     {
+        if (gameManager.GameOver() || gameManager.winScene) return;
+
         currentBar = Instantiate(barToInstantiate, barParent).GetComponent<Bar>();
         currentBar.startPosition = startPosition;
 
