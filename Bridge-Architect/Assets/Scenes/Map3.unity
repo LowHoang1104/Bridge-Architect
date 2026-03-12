@@ -826,7 +826,7 @@ Transform:
   m_GameObject: {fileID: 296232946}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4, y: -3.79, z: 0}
+  m_LocalPosition: {x: 4, y: -3.85, z: 0}
   m_LocalScale: {x: 0.35350442, y: 1.1034, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1765,7 +1765,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &680274134
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1849,7 +1849,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &722497742
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2666,7 +2666,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &889117303
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3311,7 +3311,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1293138759}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1293138761
 Camera:
   m_ObjectHideFlags: 0
@@ -3429,7 +3429,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1293138759}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f269b783e4b514540a5a3bf91976cc61, type: 3}
   m_Name: 
@@ -4400,7 +4400,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1587839122
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4933,7 +4933,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1846258709
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5184,14 +5184,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.6679245, g: 0.48771092, b: 0.48771092, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 72e8ecf46cb6547f8b781aed7dc1cdac, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0675ce4596ea3e047879ee54f19b94a0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
