@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -55,6 +55,20 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
     {
         if (gameManager.GameOver() || gameManager.winScene) return;
 
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (barCreationStarted)
+            {
+                barCreationStarted = false;
+                DeleteCurrentBar();
+            }
+            else
+            {
+                TryDeleteBar(eventData.position);
+            }
+            return;
+        }
+
         if (!barCreationStarted)
         {
             barCreationStarted = true;
@@ -62,15 +76,53 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
         }
         else
         {
-            if(eventData.button == PointerEventData.InputButton.Left)
+            if (eventData.button == PointerEventData.InputButton.Left)
             {
-                if(gameManager.CanBuyItem(currentBar.actualCost)) FinishBarCreation();
+                if (gameManager.CanBuyItem(currentBar.actualCost))
+                    FinishBarCreation();
             }
-            else if(eventData.button == PointerEventData.InputButton.Right)
+        }
+    }
+
+    void TryDeleteBar(Vector2 mousePos)
+    {
+        Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+
+        RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
+
+        if (hit.collider != null)
+        {
+            Bar bar = hit.collider.GetComponent<Bar>();
+
+            if (bar != null)
             {
-                barCreationStarted = false;
-                DeleteCurrentBar();
+                DeleteBar(bar);
             }
+        }
+    }
+
+    void DeleteBar(Bar bar)
+    {
+        Point start = bar.startJoint.connectedBody.GetComponent<Point>();
+        Point end = bar.endJoint.connectedBody.GetComponent<Point>();
+
+        if (start != null) start.connectedBars.Remove(bar);
+        if (end != null) end.connectedBars.Remove(bar);
+
+        gameManager.RefundBudget(bar.actualCost);
+
+        Destroy(bar.gameObject);
+
+        if (start != null && start.connectedBars.Count == 0 && start.runtime)
+        {
+            GameManager.AllPoints.Remove(start.pointId);
+            Destroy(start.gameObject);
+        }
+
+        if (end != null && end.connectedBars.Count == 0 && end.runtime)
+        {
+            GameManager.AllPoints.Remove(end.pointId);
+            Destroy(end.gameObject);
         }
     }
 

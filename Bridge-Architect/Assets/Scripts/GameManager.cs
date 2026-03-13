@@ -73,4 +73,12 @@ public class GameManager : MonoBehaviour
             return 1;
         }
     }
+
+
+    public void RefundBudget(float amount)
+    {
+        currentBudget += amount;
+        currentBudget = Mathf.Min(currentBudget, levelBudget);
+        myUIManager.UpdateBudgetUI(currentBudget, levelBudget);
+    }
 }
