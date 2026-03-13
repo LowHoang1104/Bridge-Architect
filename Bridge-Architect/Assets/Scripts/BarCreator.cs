@@ -48,6 +48,10 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
             currentEndPoint.transform.position = (Vector2)Vector2Int.FloorToInt(clampedPosition);
             currentEndPoint.pointId = currentEndPoint.transform.position;
             currentBar.UpdateCreatingBar(currentEndPoint.transform.position);
+
+            //cost bar preview
+            gameManager.myUIManager.UpdateBarCostPreview(currentBar.actualCost,Input.mousePosition);
+
         }
     }
 
@@ -55,6 +59,7 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
     {
         if (gameManager.GameOver() || gameManager.winScene) return;
 
+        //delete bar with right click
         if (eventData.button == PointerEventData.InputButton.Right)
         {
             if (barCreationStarted)
@@ -84,6 +89,7 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
         }
     }
 
+    // Try to delete a bar at the given mouse position
     void TryDeleteBar(Vector2 mousePos)
     {
         Vector2 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
@@ -101,6 +107,7 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
         }
     }
 
+    // Delete the given bar and handle all related cleanup
     void DeleteBar(Bar bar)
     {
         Point start = bar.startJoint.connectedBody.GetComponent<Point>();
@@ -132,6 +139,9 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
         Destroy(currentBar.gameObject);
         if (currentStartPoint.connectedBars.Count == 0 && currentStartPoint.runtime) Destroy(currentStartPoint.gameObject);
         if (currentEndPoint.connectedBars.Count == 0 && currentEndPoint.runtime) Destroy(currentEndPoint.gameObject);
+
+        // cost bar preview
+        gameManager.myUIManager.HideBarCostPreview();
     }
 
     private void FinishBarCreation()
@@ -156,6 +166,9 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
         currentBar.endJoint.anchor = currentBar.transform.InverseTransformPoint(currentEndPoint.transform.position);
 
         gameManager.UpdateBudget(currentBar.actualCost);
+
+        //cost bar preview
+        gameManager.myUIManager.HideBarCostPreview();
 
         StartBarCreation(currentEndPoint.transform.position);
     }

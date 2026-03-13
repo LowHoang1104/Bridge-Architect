@@ -25,10 +25,15 @@ public class UIManager : MonoBehaviour
     public Sprite starEmpty;
     public GameObject resultPanel;
 
+
+    // cost bar preview
+    public TextMeshProUGUI barCostPreview;
+
     // Start is called before the first frame update
     void Start()
     {
         roadButton.onClick.Invoke();
+        barCostPreview.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -79,4 +84,37 @@ public class UIManager : MonoBehaviour
         star3.sprite = (starCount >= 3) ? starFull : starEmpty;
     }
 
+
+
+    // cost bar preview
+    //public void UpdateBarCostPreview(float cost, Vector2 screenPos)
+    //{
+    //    barCostPreview.gameObject.SetActive(true);
+
+    //    barCostPreview.text = "Cost: " + Mathf.FloorToInt(cost) + "$";
+
+    //    barCostPreview.rectTransform.position =
+    //        Input.mousePosition + new Vector3(0, 40, 0);
+    //}
+
+
+    // cost bar preview
+    public void UpdateBarCostPreview(float cost, Vector2 screenPos)
+    {
+        barCostPreview.gameObject.SetActive(true);
+        barCostPreview.text = "Cost: " + Mathf.FloorToInt(cost) + "$";
+
+        Vector3 targetPos = screenPos + new Vector2(0, 40);
+
+        barCostPreview.rectTransform.position = Vector3.Lerp(
+            barCostPreview.rectTransform.position,
+            targetPos,
+            10f * Time.deltaTime
+        );
+    }
+    // cost bar preview
+    public void HideBarCostPreview()
+    {
+        barCostPreview.gameObject.SetActive(false);
+    }
 }
