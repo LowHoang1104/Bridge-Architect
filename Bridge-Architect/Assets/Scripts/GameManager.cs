@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     public UIManager myUIManager;
     public static Dictionary<Vector2, Point> AllPoints = new Dictionary<Vector2, Point>();
     public bool winScene = false;
+    
+    public int woodBarsUsed = 0;
+    public int ironBarsUsed = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +30,8 @@ public class GameManager : MonoBehaviour
         AllPoints.Clear();
         Time.timeScale = 0;
         currentBudget = levelBudget;
+        woodBarsUsed = 0;
+        ironBarsUsed = 0;
         myUIManager.UpdateBudgetUI(currentBudget, levelBudget);
     }
 
@@ -41,6 +46,18 @@ public class GameManager : MonoBehaviour
         myUIManager.UpdateBudgetUI(currentBudget, levelBudget);
     }
 
+    public void AddMaterialUsage(string materialType)
+    {
+        if (materialType == "wood")
+        {
+            woodBarsUsed++;
+        }
+        else if (materialType == "iron")
+        {
+            ironBarsUsed++;
+        }
+    }
+
     public bool GameOver()
     {
         return currentBudget <= 0;
@@ -51,6 +68,7 @@ public class GameManager : MonoBehaviour
         int achievedStars = GetStars();
             Debug.Log("Stars: " + achievedStars);
         myUIManager.ShowStars(achievedStars);
+        myUIManager.ShowMaterialStats(woodBarsUsed, ironBarsUsed);
         
         winScene = true;
     }

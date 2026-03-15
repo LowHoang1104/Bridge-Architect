@@ -104,6 +104,9 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
         currentBar.endJoint.anchor = currentBar.transform.InverseTransformPoint(currentEndPoint.transform.position);
 
         gameManager.UpdateBudget(currentBar.actualCost);
+        
+        string materialType = (barToInstantiate == woodBar) ? "wood" : "iron";
+        gameManager.AddMaterialUsage(materialType);
 
         StartBarCreation(currentEndPoint.transform.position);
     }

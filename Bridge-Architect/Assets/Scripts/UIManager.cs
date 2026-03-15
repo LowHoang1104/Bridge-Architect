@@ -24,6 +24,9 @@ public class UIManager : MonoBehaviour
     public Sprite starFull;
     public Sprite starEmpty;
     public GameObject resultPanel;
+    
+    public TextMeshProUGUI materialStatsText;
+    public GameObject materialStatsPanel;
 
     // Start is called before the first frame update
     void Start()
@@ -77,6 +80,15 @@ public class UIManager : MonoBehaviour
         star1.sprite = (starCount >= 1) ? starFull : starEmpty;
         star2.sprite = (starCount >= 2) ? starFull : starEmpty;
         star3.sprite = (starCount >= 3) ? starFull : starEmpty;
+    }
+
+    public void ShowMaterialStats(int woodCount, int ironCount)
+    {
+        if (materialStatsPanel != null && materialStatsText != null)
+        {
+            materialStatsPanel.SetActive(true);
+            materialStatsText.text = $"Materials Used:\n Wood: {woodCount}\n Iron: {ironCount}";
+        }
     }
 
 }
