@@ -13,6 +13,10 @@ public class GameManager : MonoBehaviour
     
     public int woodBarsUsed = 0;
     public int ironBarsUsed = 0;
+
+    public Bar weakestBar;
+    public float highestStress = 0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +36,8 @@ public class GameManager : MonoBehaviour
         currentBudget = levelBudget;
         woodBarsUsed = 0;
         ironBarsUsed = 0;
+        weakestBar = null;
+        highestStress = 0f;
         myUIManager.UpdateBudgetUI(currentBudget, levelBudget);
     }
 
@@ -57,7 +63,15 @@ public class GameManager : MonoBehaviour
             ironBarsUsed++;
         }
     }
-
+    public void UpdateWeakestBar(Bar bar, float stress)
+    {
+        if (stress > highestStress)
+        {
+            highestStress = stress;
+            weakestBar = bar;
+            myUIManager.HighlightWeakestBar(bar);
+        }
+    }
     public bool GameOver()
     {
         return currentBudget <= 0;

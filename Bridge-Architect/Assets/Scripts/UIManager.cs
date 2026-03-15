@@ -13,6 +13,12 @@ public class UIManager : MonoBehaviour
 
     public Slider budgetSlider;
     public TextMeshProUGUI BudgetText;
+    public TextMeshProUGUI materialStatsText;
+    public GameObject materialStatsPanel;
+    public TextMeshProUGUI stressIndicatorText;
+    public GameObject stressIndicatorPanel;
+    private Bar previouslyHighlightedBar;
+
     public Gradient myGradient;
 
     public GameObject[] starImages;
@@ -24,9 +30,6 @@ public class UIManager : MonoBehaviour
     public Sprite starFull;
     public Sprite starEmpty;
     public GameObject resultPanel;
-    
-    public TextMeshProUGUI materialStatsText;
-    public GameObject materialStatsPanel;
 
     // Start is called before the first frame update
     void Start()
@@ -91,4 +94,31 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void HighlightWeakestBar(Bar weakestBar)
+    {
+        if (previouslyHighlightedBar != null && previouslyHighlightedBar != weakestBar)
+        {
+            previouslyHighlightedBar.ResetHighlight();
+        }
+
+        if (weakestBar != null)
+        {
+            weakestBar.HighlightAsWeakest();
+            previouslyHighlightedBar = weakestBar;
+            
+            if (stressIndicatorPanel != null && stressIndicatorText != null)
+            {
+                stressIndicatorPanel.SetActive(true);
+                stressIndicatorText.text = "Weakest Bar Under Stress!";
+                stressIndicatorText.color = Color.red;
+            }
+        }
+        else
+        {
+            if (stressIndicatorPanel != null)
+            {
+                stressIndicatorPanel.SetActive(false);
+            }
+        }
+    }
 }

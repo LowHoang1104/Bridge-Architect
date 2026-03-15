@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bar : MonoBehaviour
 {
+    public GameManager gameManager;
 
     public float cost = 1f;
     public float maxLength = 1f;
@@ -18,11 +19,16 @@ public class Bar : MonoBehaviour
     float endJointCurrentLoad = 0f;
     MaterialPropertyBlock propBlock;
     public float actualCost;
+    
+    private Color originalColor;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (barSpriteRender != null)
+        {
+            originalColor = barSpriteRender.color;
+        }
     }
 
     // Update is called once per frame
@@ -58,5 +64,26 @@ public class Bar : MonoBehaviour
         barSpriteRender.GetPropertyBlock(propBlock);
         propBlock.SetFloat("_Load", maxLoad);
         barSpriteRender.SetPropertyBlock(propBlock);
+        
+        if (gameManager != null && Time.timeScale == 1)
+        {
+            gameManager.UpdateWeakestBar(this, maxLoad);
+        }
+    }
+    
+    public void HighlightAsWeakest()
+    {
+        if (barSpriteRender != null)
+        {
+            barSpriteRender.color = Color.green;
+        }
+    }
+    
+    public void ResetHighlight()
+    {
+        if (barSpriteRender != null)
+        {
+            barSpriteRender.color = originalColor;
+        }
     }
 }

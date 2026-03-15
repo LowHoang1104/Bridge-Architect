@@ -116,6 +116,7 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
         if (gameManager.GameOver() || gameManager.winScene) return;
 
         currentBar = Instantiate(barToInstantiate, barParent).GetComponent<Bar>();
+        currentBar.gameManager = gameManager;
         currentBar.startPosition = startPosition;
 
         if (GameManager.AllPoints.ContainsKey(startPosition))
