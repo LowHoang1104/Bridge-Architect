@@ -23,6 +23,16 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
     public GameObject pointToInstantiate;
     public Transform pointParent;
 
+    public class BarAction
+    {
+        public Bar bar;
+        public Point startPoint;
+        public Point endPoint;
+        public string materialType;
+    }
+
+    private Stack<BarAction> actionHistory = new Stack<BarAction>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +43,12 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
     void Update()
     {
         if (gameManager.GameOver() || gameManager.winScene) return;
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            UndoLastAction();
+        }
+
         if (barCreationStarted)
         {
             Vector2 endPosition = (Vector2)Vector2Int.RoundToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition));
@@ -78,8 +94,53 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
     {
         if (gameManager.GameOver() || gameManager.winScene) return;
         Destroy(currentBar.gameObject);
-        if (currentStartPoint.connectedBars.Count == 0 && currentStartPoint.runtime) Destroy(currentStartPoint.gameObject);
-        if (currentEndPoint.connectedBars.Count == 0 && currentEndPoint.runtime) Destroy(currentEndPoint.gameObject);
+        if (currentStartPoint.connectedBars.Count == 0 && currentStartPoint.runtime)
+        {
+            GameManager.AllPoints.Remove(currentStartPoint.transform.position);
+            Destroy(currentStartPoint.gameObject);
+        }
+        if (currentEndPoint.connectedBars.Count == 0 && currentEndPoint.runtime)
+        {
+            GameManager.AllPoints.Remove(currentEndPoint.transform.position);
+            Destroy(currentEndPoint.gameObject);
+        }
+    }
+
+    private void UndoLastAction()
+    {
+        if (gameManager.GameOver() || gameManager.winScene) return;
+
+        if (barCreationStarted)
+        {
+            barCreationStarted = false;
+            DeleteCurrentBar();
+        }
+
+        if (actionHistory.Count > 0)
+        {
+            BarAction lastAction = actionHistory.Pop();
+
+            gameManager.UpdateBudget(-lastAction.bar.actualCost);
+            
+            if (lastAction.materialType == "wood") gameManager.woodBarsUsed--;
+            if (lastAction.materialType == "iron") gameManager.ironBarsUsed--;
+
+            lastAction.startPoint.connectedBars.Remove(lastAction.bar);
+            lastAction.endPoint.connectedBars.Remove(lastAction.bar);
+
+            if (lastAction.startPoint.connectedBars.Count == 0 && lastAction.startPoint.runtime)
+            {
+                GameManager.AllPoints.Remove(lastAction.startPoint.transform.position);
+                Destroy(lastAction.startPoint.gameObject);
+            }
+            if (lastAction.endPoint.connectedBars.Count == 0 && lastAction.endPoint.runtime)
+            {
+                GameManager.AllPoints.Remove(lastAction.endPoint.transform.position);
+                Destroy(lastAction.endPoint.gameObject);
+            }
+
+            Destroy(lastAction.bar.gameObject);
+        }
     }
 
     private void FinishBarCreation()
@@ -107,6 +168,13 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
         
         string materialType = (barToInstantiate == woodBar) ? "wood" : "iron";
         gameManager.AddMaterialUsage(materialType);
+
+        BarAction action = new BarAction();
+        action.bar = currentBar;
+        action.startPoint = currentStartPoint;
+        action.endPoint = currentEndPoint;
+        action.materialType = materialType;
+        actionHistory.Push(action);
 
         StartBarCreation(currentEndPoint.transform.position);
     }
