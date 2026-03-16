@@ -10,16 +10,7 @@ public class ScenesManager : MonoBehaviour
     [SerializeField] private CanvasGroup fadeCanvasGroup;
     [SerializeField] private float fadeDuration = 0.5f;
 
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
+   
 
     // Start is called before the first frame update
     void Start()
