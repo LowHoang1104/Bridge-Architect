@@ -99,18 +99,10 @@ public class UIManager : MonoBehaviour
 
 
     // cost bar preview
-    public void UpdateBarCostPreview(float cost, Vector2 screenPos)
+    public void UpdateBarCostPreview(float cost)
     {
         barCostPreview.gameObject.SetActive(true);
         barCostPreview.text = "Cost: " + Mathf.FloorToInt(cost) + "$";
-
-        Vector3 targetPos = screenPos + new Vector2(0, 40);
-
-        barCostPreview.rectTransform.position = Vector3.Lerp(
-            barCostPreview.rectTransform.position,
-            targetPos,
-            10f * Time.deltaTime
-        );
     }
     // cost bar preview
     public void HideBarCostPreview()

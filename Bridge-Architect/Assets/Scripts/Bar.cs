@@ -32,6 +32,16 @@ public class Bar : MonoBehaviour
         if (Time.timeScale == 1) UpdateMaterial();
     }
 
+    void OnMouseEnter()
+    {
+        barSpriteRender.color = Color.yellow;
+    }
+
+    void OnMouseExit()
+    {
+        barSpriteRender.color = Color.white;
+    }
+
     public void UpdateCreatingBar(Vector2 toPosition)
     {
         transform.position = (toPosition + startPosition) / 2;

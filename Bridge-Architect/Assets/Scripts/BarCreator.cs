@@ -50,7 +50,7 @@ public class BarCreator : MonoBehaviour, IPointerDownHandler
             currentBar.UpdateCreatingBar(currentEndPoint.transform.position);
 
             //cost bar preview
-            gameManager.myUIManager.UpdateBarCostPreview(currentBar.actualCost,Input.mousePosition);
+            gameManager.myUIManager.UpdateBarCostPreview(currentBar.actualCost);
 
         }
     }
